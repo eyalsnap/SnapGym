@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">snapGym</string>
+    <string name="title_activity_train_details">trainDetails</string>
+</resources>
