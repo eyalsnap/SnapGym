@@ -58,6 +58,15 @@ public class TrainDetailsActivity extends AppCompatActivity {
                 updatingExcersiceList();
             }
         });
+        Button editRhythm = (Button) findViewById(R.id.editRhythmButton);
+        editRhythm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent editRhythmActivity = new Intent(getApplicationContext(), EditRhythmActivity.class);
+                editRhythmActivity.putExtra("com.es.snapgym.EXCERSICE_OBJECT", excersiceDetails.get(taggedExcersiceIndex));
+                startActivity(editRhythmActivity );
+            }
+        });
     }
 
     private ExcersiceDetailData createExcersiceDetail() {
@@ -202,6 +211,8 @@ public class TrainDetailsActivity extends AppCompatActivity {
     private void addingElementsChangingVisible(int visibility){
         Button deletingExcersice = (Button) findViewById(R.id.removingExcersiceButton);
         deletingExcersice.setVisibility(visibility);
+        Button editRhythm = (Button) findViewById(R.id.editRhythmButton);
+        editRhythm.setVisibility(visibility);
     }
 
     private void removingElementsChangingVisible(int visibility){
