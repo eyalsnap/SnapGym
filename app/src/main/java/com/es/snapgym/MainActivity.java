@@ -27,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        TextView tv = (TextView) findViewById(R.id.locationTextView);
+        tv.setTag(tv.getKeyListener());
+        tv.setKeyListener(null);
+
         if (shouldCleanTable) {
             DBTrainData dbTrainData = new DBTrainData(this, TRAINS_DB_NAME);
             SQLiteDatabase db = dbTrainData.getWritableDatabase();
@@ -60,6 +64,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 watchingTrains();
+            }
+        });
+
+        Button tempButton = (Button) findViewById(R.id.tempButton);
+        tempButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tempFunction();
             }
         });
     }
@@ -129,5 +141,11 @@ public class MainActivity extends AppCompatActivity {
     private TrainDetailData createTrainDetailData(String location, String type){
         this.currentTrainTableName = dateString + "_" + date.getTime() + "_in_" + location + "_type_" + type;
         return new TrainDetailData(this.currentTrainTableName,type,date.getTime(),dateString, location);
+    }
+
+    private void tempFunction(){
+        Intent editRhythmActivity = new Intent(getApplicationContext(), EditRhythmActivity.class);
+        editRhythmActivity.putExtra("com.es.snapgym.EXCERSICE_OBJECT", new ExcersiceDetailData("ex_name", 5));
+        startActivity(editRhythmActivity );
     }
 }
