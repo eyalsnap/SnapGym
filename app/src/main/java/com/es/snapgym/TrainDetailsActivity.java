@@ -6,13 +6,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.LinkedList;
 
 public class TrainDetailsActivity extends AppCompatActivity {
+
+    private NumberPicker addExcersiceNumberPicker;
 
     private ListView excersiceListView;
     private LinkedList<ExcersiceDetailData> excersiceDetails = new LinkedList<>();
@@ -70,11 +74,10 @@ public class TrainDetailsActivity extends AppCompatActivity {
     }
 
     private ExcersiceDetailData createExcersiceDetail() {
-        TextView newnameTextView = (TextView) findViewById(R.id.newExcersiceTextView);
-        TextView newRepeatTextView = (TextView) findViewById(R.id.excersiceRepeatTextView);
+        EditText newnameTextView = (EditText) findViewById(R.id.newExcersiceEditView);
 
         String newName = newnameTextView.getText().toString();
-        int newRepeat = Integer.parseInt(newRepeatTextView.getText().toString());
+        int newRepeat = addExcersiceNumberPicker.getValue();
 
         if (isExcersiceExist(newName)) {
             Toast.makeText(getApplicationContext(), "Excersice Already Exists", Toast.LENGTH_SHORT).show();
@@ -89,8 +92,11 @@ public class TrainDetailsActivity extends AppCompatActivity {
     }
 
     private void initExcersiceList() {
-        excersiceDetails.add( new ExcersiceDetailData("chest",3) );
-        excersiceDetails.add( new ExcersiceDetailData("back",10) );
+
+        addExcersiceNumberPicker = (NumberPicker) findViewById(R.id.excersiceRepeatNumberPicker);
+        addExcersiceNumberPicker.setMinValue(1);
+        addExcersiceNumberPicker.setMaxValue(20);
+        addExcersiceNumberPicker.setWrapSelectorWheel(false);
 
         String previous = getIntent().getExtras().getString("com.es.snapgym.PREVIOUS_TRAIN_TABLE_NAME");
         String currentTableName = getIntent().getExtras().getString("com.es.snapgym.CURRENT_TRAIN_TABLE_NAME");
@@ -223,10 +229,9 @@ public class TrainDetailsActivity extends AppCompatActivity {
         saveButton.setVisibility(visibility);
         addExcersiceButton.setVisibility(visibility);
 
-        TextView excersiceName = (TextView) findViewById(R.id.newExcersiceTextView);
-        TextView excersiceRepeat = (TextView) findViewById(R.id.excersiceRepeatTextView);
+        TextView excersiceName = (TextView) findViewById(R.id.newExcersiceEditView);
         excersiceName.setVisibility(visibility);
-        excersiceRepeat.setVisibility(visibility);
+        addExcersiceNumberPicker.setVisibility(visibility);
 
     }
 

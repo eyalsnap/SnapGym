@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,10 +27,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        TextView tv = (TextView) findViewById(R.id.locationTextView);
-        tv.setTag(tv.getKeyListener());
-        tv.setKeyListener(null);
 
         if (shouldCleanTable) {
             DBTrainData dbTrainData = new DBTrainData(this, TRAINS_DB_NAME);
@@ -129,12 +126,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String getLocation() {
-        TextView locationTextView = (TextView) findViewById(R.id.locationTextView);
+        EditText locationTextView = (EditText) findViewById(R.id.locationEditText);
         return locationTextView.getText().toString();
     }
 
     private String getType() {
-        TextView locationTextView = (TextView) findViewById(R.id.trainTypeTextView);
+        EditText locationTextView = (EditText) findViewById(R.id.trainTypeEditView);
         return locationTextView.getText().toString();
     }
 
