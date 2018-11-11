@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         if (shouldCleanTable) {
             DBTrainData dbTrainData = new DBTrainData(this, TRAINS_DB_NAME);
             SQLiteDatabase db = dbTrainData.getWritableDatabase();
-            db.execSQL("DROP TABLE IF EXISTS " + TRAINS_DB_NAME);
-            db.execSQL("CREATE TABLE " + TRAINS_DB_NAME + "(ID INTEGER PRIMARY KEY, TABLE_NAME STRING, TYPE STRING, DATE LONG, DATE_TO_SHOW STRING, LOCATION STRING)");
+            db.execSQL("DROP TABLE IF EXISTS table_of_" + TRAINS_DB_NAME);
+            db.execSQL("CREATE TABLE  table_of_" + TRAINS_DB_NAME + "(ID INTEGER PRIMARY KEY, TABLE_NAME STRING, TYPE STRING, DATE LONG, DATE_TO_SHOW STRING, LOCATION STRING)");
         }
 
         setDate();
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void watchingTrains() {
         Intent watchActivity = new Intent(getApplicationContext(), TrainDetailsWatchActivity.class);
-        watchActivity.putExtra("com.es.snapgym.TRAIN_TABLE_NAME", TRAINS_DB_NAME);
+        watchActivity.putExtra("com.es.snapgym.TRAIN_TABLE_NAME", "table_of_" + TRAINS_DB_NAME);
         startActivity(watchActivity);
     }
 
@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         trainListActivity.putExtra("com.es.snapgym.DATE", dateString);
         trainListActivity.putExtra("com.es.snapgym.PREVIOUS_TRAIN_TABLE_NAME", previousTrain);
         trainListActivity.putExtra("com.es.snapgym.CURRENT_TRAIN_TABLE_NAME", this.currentTrainTableName);
+        trainListActivity.putExtra("com.es.snapgym.IS_NEW", true);
 
         trainListActivity.putExtra("com.es.snapgym.IS_WATCHING", false);
     }

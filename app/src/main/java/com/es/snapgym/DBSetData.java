@@ -14,7 +14,7 @@ import java.util.LinkedList;
 public class DBSetData extends DBConnector {
 
     public DBSetData(Context context, String excersiceName) {
-        super(context, "table_of_" + excersiceName, "ROUND");
+        super(context, excersiceName, "ROUND");
     }
 
     @Override

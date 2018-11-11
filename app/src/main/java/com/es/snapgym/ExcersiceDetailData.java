@@ -2,6 +2,9 @@ package com.es.snapgym;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.widget.NumberPicker;
+
+import java.util.LinkedList;
 
 /**
  * Created by EYAL on 24/09/2018.
@@ -11,15 +14,37 @@ public class ExcersiceDetailData extends DBDetailObject implements Parcelable{
 
     private final String name;
     private final int repeat;
+    private RhythmAbstractClass rhythm;
 
     public ExcersiceDetailData(String name, int repeat) {
         this.name = name;
         this.repeat = repeat;
+        this.rhythm = new RhythmClassEmpty();
+    }
+
+    public ExcersiceDetailData(String name, int repeat, String rhythmString) {
+        this.name = name;
+        this.repeat = repeat;
+        this.rhythm = new RhythmClassReal(rhythmString);
+    }
+
+    public ExcersiceDetailData(String name, int repeat, LinkedList<NumberPicker> rhythmLst) {
+        this.name = name;
+        this.repeat = repeat;
+        this.rhythm = new RhythmClassReal(rhythmLst);
     }
 
     protected ExcersiceDetailData(Parcel in) {
         name = in.readString();
         repeat = in.readInt();
+    }
+
+    public void setRhythm(RhythmAbstractClass newRhytm){
+        this.rhythm = newRhytm;
+    }
+
+    public String getRhythm(){
+        return this.rhythm.getRhythmString();
     }
 
     public String getName() {

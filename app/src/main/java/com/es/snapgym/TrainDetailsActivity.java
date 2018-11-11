@@ -66,9 +66,20 @@ public class TrainDetailsActivity extends AppCompatActivity {
         editRhythm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                saveCurrentExcersices();
+
                 Intent editRhythmActivity = new Intent(getApplicationContext(), EditRhythmActivity.class);
                 editRhythmActivity.putExtra("com.es.snapgym.EXCERSICE_OBJECT", excersiceDetails.get(taggedExcersiceIndex));
+
+                editRhythmActivity.putExtra("com.es.snapgym.LOCATION", getIntent().getExtras().getString("com.es.snapgym.LOCATION"));
+                editRhythmActivity.putExtra("com.es.snapgym.TYPE", getIntent().getExtras().getString("com.es.snapgym.TYPE"));
+                editRhythmActivity.putExtra("com.es.snapgym.DATE", getIntent().getExtras().getString("com.es.snapgym.DATE"));
+                editRhythmActivity.putExtra("com.es.snapgym.PREVIOUS_TRAIN_TABLE_NAME", getIntent().getExtras().getString("com.es.snapgym.PREVIOUS_TRAIN_TABLE_NAME"));
+                editRhythmActivity.putExtra("com.es.snapgym.CURRENT_TRAIN_TABLE_NAME", getIntent().getExtras().getString("com.es.snapgym.CURRENT_TRAIN_TABLE_NAME"));
+
                 startActivity(editRhythmActivity );
+
             }
         });
     }
@@ -196,7 +207,13 @@ public class TrainDetailsActivity extends AppCompatActivity {
     }
 
     private void loadExcersices() {
-        this.excersiceDetails = this.currentDbExcersiceData.loadExcersices();
+        boolean isNew = getIntent().getExtras().getBoolean("com.es.snapgym.IS_NEW");
+        if (isNew)
+            this.excersiceDetails = this.previousDbExcersiceData.loadExcersices();
+        else
+            this.excersiceDetails = this.currentDbExcersiceData.loadExcersices();
+
+        saveCurrentExcersices();
         updatingExcersiceList();
     }
 

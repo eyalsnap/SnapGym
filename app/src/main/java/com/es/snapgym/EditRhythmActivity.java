@@ -1,5 +1,6 @@
 package com.es.snapgym;
 
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -16,7 +17,11 @@ import java.util.LinkedList;
 
 public class EditRhythmActivity extends AppCompatActivity {
 
+    private ExcersiceDetailData excersiceDetailData;
+
     private NumberPicker beforeNumberPicker;
+
+    private DBExcersiceData dbExcersiceData;
 
     private NumberPicker basicNumberPicker;
     private float numberPickersWidth;
@@ -32,10 +37,12 @@ public class EditRhythmActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_rhythm);
-        ExcersiceDetailData excersiceDetailData = getIntent().getParcelableExtra("com.es.snapgym.EXCERSICE_OBJECT");
+        excersiceDetailData = getIntent().getParcelableExtra("com.es.snapgym.EXCERSICE_OBJECT");
 
         TextView excersiceTextView = (TextView) findViewById(R.id.editRhythmExNameTextView);
         excersiceTextView.setText(excersiceDetailData.getName());
+
+        dbExcersiceData = new DBExcersiceData(this, getIntent().getExtras().getString("com.es.snapgym.CURRENT_TRAIN_TABLE_NAME"));
 
         initBeforeSetNumberPicker();
         initNumberPickerVariables();
@@ -60,6 +67,26 @@ public class EditRhythmActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 removingTime();
+            }
+        });
+
+        Button finishRhythm = (Button) findViewById(R.id.finishRhytmButton);
+        finishRhythm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent trainIntent = new Intent(getApplicationContext(), TrainDetailsActivity.class);
+
+                trainIntent.putExtra("com.es.snapgym.LOCATION", getIntent().getExtras().getString("com.es.snapgym.LOCATION"));
+                trainIntent.putExtra("com.es.snapgym.TYPE", getIntent().getExtras().getString("com.es.snapgym.TYPE"));
+                trainIntent.putExtra("com.es.snapgym.DATE", getIntent().getExtras().getString("com.es.snapgym.DATE"));
+                trainIntent.putExtra("com.es.snapgym.PREVIOUS_TRAIN_TABLE_NAME", getIntent().getExtras().getString("com.es.snapgym.PREVIOUS_TRAIN_TABLE_NAME"));
+                trainIntent.putExtra("com.es.snapgym.CURRENT_TRAIN_TABLE_NAME", getIntent().getExtras().getString("com.es.snapgym.CURRENT_TRAIN_TABLE_NAME"));
+                trainIntent.putExtra("com.es.snapgym.IS_NEW", false);
+
+                dbExcersiceData.addRoundDeleteIfExist(new ExcersiceDetailData(excersiceDetailData.getName(), excersiceDetailData.getRepeat(), numberPickersLst));
+
+                startActivity(trainIntent);
             }
         });
 
@@ -110,6 +137,9 @@ public class EditRhythmActivity extends AppCompatActivity {
 
         numberPickersWidth = basicNumberPicker.getWidth();
         numberPickersLst = new LinkedList<>();
+
+        excersiceDetailData.setRhythm(new RhythmClassReal(numberPickersLst));
+
         numberPickersLst.add(basicNumberPicker);
 
     }

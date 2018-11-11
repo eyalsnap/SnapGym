@@ -14,12 +14,12 @@ import java.util.LinkedList;
 public class DBExcersiceData extends DBConnector {
 
     public DBExcersiceData(Context context, String trainTableName) {
-        super(context, "table_of_" + trainTableName, "EXCERSICE_NAME");
+        super(context, trainTableName, "EXCERSICE_NAME");
     }
 
     @Override
     protected String getCreationString() {
-        return  " (ID INTEGER PRIMARY KEY, EXCERSICE_NAME STRING, REPEAT INTEGER)";
+        return  " (ID INTEGER PRIMARY KEY, EXCERSICE_NAME STRING, REPEAT INTEGER, RHYTHM STRING)";
     }
 
     @Override
@@ -27,6 +27,7 @@ public class DBExcersiceData extends DBConnector {
         ExcersiceDetailData ExcersiceDetail = (ExcersiceDetailData) objectDetail;
         contentValues.put("excersice_name", ExcersiceDetail.getName());
         contentValues.put("repeat", ExcersiceDetail.getRepeat());
+        contentValues.put("rhythm", ExcersiceDetail.getRhythm());
     }
 
     @Override
@@ -37,7 +38,11 @@ public class DBExcersiceData extends DBConnector {
     private ExcersiceDetailData convertDataToReportDetailAfterMoving(Cursor data) {
         String name = data.getString(1);
         int repeat = data.getInt(2);
-        return new ExcersiceDetailData(name, repeat);
+        String rhytmString = data.getString(3);
+        if ("rhythm".equals(rhytmString))
+            return new ExcersiceDetailData(name, repeat);
+        else
+            return new ExcersiceDetailData(name, repeat, rhytmString);
     }
 
     public LinkedList<ExcersiceDetailData> loadExcersices() {

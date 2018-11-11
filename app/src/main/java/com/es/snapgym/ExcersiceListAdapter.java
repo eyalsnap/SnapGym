@@ -46,9 +46,11 @@ public class ExcersiceListAdapter extends BaseAdapter {
         View view = this.mInflater.inflate(R.layout.excersice_performence, null);
         TextView nameTextView = (TextView) view.findViewById(R.id.excersiceTextView);
         TextView repeatTextView = (TextView) view.findViewById(R.id.locationTextView);
+        TextView rhythmTextView = (TextView) view.findViewById(R.id.rhythmTextView);
 
         nameTextView.setText(currentExcersice.getName());
         repeatTextView.setText("" + currentExcersice.getRepeat());
+        rhythmTextView.setText("" + currentExcersice.getRhythm());
 
         return view;
 

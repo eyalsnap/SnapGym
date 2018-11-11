@@ -25,11 +25,11 @@
         android:layout_marginEnd="78dp"
         android:layout_alignBaseline="@+id/excersiceTextView"
         android:layout_alignBottom="@+id/excersiceTextView"
-        android:layout_toLeftOf="@+id/textView5"
-        android:layout_toStartOf="@+id/textView5" />
+        android:layout_toLeftOf="@+id/rhythmTextView"
+        android:layout_toStartOf="@+id/rhythmTextView" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/rhythmTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/locationTextView"

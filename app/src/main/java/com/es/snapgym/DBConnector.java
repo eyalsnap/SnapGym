@@ -16,8 +16,8 @@ public abstract class DBConnector extends SQLiteOpenHelper {
     protected final String keyParameter;
 
     public DBConnector(Context context, String theTableName, String key) {
-        super(context, theTableName, null, 1);
-        this.tableName = theTableName;
+        super(context, "table_of_" + theTableName, null, 1);
+        this.tableName = "table_of_" + theTableName;
         this.keyParameter = key;
     }
 
@@ -83,6 +83,13 @@ public abstract class DBConnector extends SQLiteOpenHelper {
     public void cleanTable(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(this.tableName, "1 = 1", null);
+    }
+
+    public void copyingTable(String originTable){
+        String sql = "INSERT INTO " + this.tableName +
+                " SELECT * FROM table_of_" + originTable;
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(sql);
     }
 
     public String getTableName(){
