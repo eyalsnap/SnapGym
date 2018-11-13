@@ -7,11 +7,11 @@ package com.es.snapgym;
 public class SetDetailData extends DBDetailObject {
 
     private final int round;
-    private final float weight;
+    private final String weight;
     private final int repeat;
     private final int target;
 
-    public SetDetailData(int theRound, float theWeight, int theRepeat, int theTarget) {
+    public SetDetailData(int theRound, String theWeight, int theRepeat, int theTarget) {
         this.round = theRound;
         this.weight = theWeight;
         this.repeat = theRepeat;
@@ -22,7 +22,7 @@ public class SetDetailData extends DBDetailObject {
         return this.round;
     }
 
-    public float getWeight(){
+    public String getWeight(){
         return this.weight;
     }
 

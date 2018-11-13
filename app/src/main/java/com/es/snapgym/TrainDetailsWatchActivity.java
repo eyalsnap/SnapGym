@@ -26,6 +26,7 @@ public class TrainDetailsWatchActivity extends AppCompatActivity {
     private void initExcersiceList() {
 
         String trainsTableName = getIntent().getExtras().getString("com.es.snapgym.TRAIN_TABLE_NAME");
+        trainsTableName = trainsTableName.replace("table_of_","");
         DBTrainData dbt = new DBTrainData(this, trainsTableName);
 
         trainsDetails = dbt.loadTrains();
@@ -46,15 +47,14 @@ public class TrainDetailsWatchActivity extends AppCompatActivity {
 
                 TrainDetailData trainDetailData = trainsDetails.get(position);
 
-                Intent trainDetailActivity = new Intent(getApplicationContext(), TrainDetailsActivity.class);
+                Intent watchingTrainIntent = new Intent(getApplicationContext(), WatchingBoardActivity.class);
 
-                trainDetailActivity.putExtra("com.es.snapgym.LOCATION", trainDetailData.getLocation());
-                trainDetailActivity.putExtra("com.es.snapgym.TYPE", trainDetailData.getTrainType());
-                trainDetailActivity.putExtra("com.es.snapgym.DATE", trainDetailData.getDateToShow());
-                trainDetailActivity.putExtra("com.es.snapgym.PREVIOUS_TRAIN_TABLE_NAME", (String)null);
-                trainDetailActivity.putExtra("com.es.snapgym.CURRENT_TRAIN_TABLE_NAME", trainDetailData.getTrainTableName());
+                watchingTrainIntent.putExtra("com.es.snapgym.LOCATION", trainDetailData.getLocation());
+                watchingTrainIntent.putExtra("com.es.snapgym.TYPE", trainDetailData.getTrainType());
+                watchingTrainIntent.putExtra("com.es.snapgym.DATE", trainDetailData.getDateToShow());
+                watchingTrainIntent.putExtra("com.es.snapgym.CURRENT_TRAIN_TABLE_NAME", trainDetailData.getTrainTableName());
 
-                startActivity(trainDetailActivity);
+                startActivity(watchingTrainIntent);
             }
         });
 

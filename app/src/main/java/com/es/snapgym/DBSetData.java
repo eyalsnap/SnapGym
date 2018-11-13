@@ -19,7 +19,7 @@ public class DBSetData extends DBConnector {
 
     @Override
     protected String getCreationString(){
-        return  " (ID INTEGER PRIMARY KEY, ROUND INTEGER, WEIGHT FLOAT, REPEAT INTEGER, TARGET INTEGER)";
+        return  " (ID INTEGER PRIMARY KEY, ROUND INTEGER, WEIGHT STRING, REPEAT INTEGER, TARGET INTEGER)";
     }
 
     @Override
@@ -35,7 +35,7 @@ public class DBSetData extends DBConnector {
     @Override
     protected Object convertDataToReportDetail(Cursor data) {
         int round = data.getInt(1);
-        float weight = data.getFloat(2);
+        String weight = data.getString(2);
         int repeat = data.getInt(3);
         int target = data.getInt(4);
         return new SetDetailData(round, weight, repeat, target);

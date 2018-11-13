@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -120,13 +121,15 @@ public class SetReportActivity extends AppCompatActivity {
     }
 
     private SetDetailData createReportDetail() {
-        return new SetDetailData(this.round, 5.5f, this.resultReport.getNumber(), this.targetReport.getNumber());
+        EditText weightTextView = (EditText) findViewById(R.id.reportExcersiceWeightTextView);
+        String weight = weightTextView.getText().toString();
+        return new SetDetailData(this.round, weight, this.resultReport.getNumber(), this.targetReport.getNumber());
     }
 
     private void readingTables() {
         this.previousExcersiceResult = new DBSetData(this, previousTableName);
         this.currentExcersiceResult = new DBSetData(this, currentTableName);
-        this.resultsData = new AllExcersiceResultData(this.previousExcersiceResult, this.currentExcersiceResult, this.maxRound);
+        this.resultsData = new AllExcersiceResultData(this.previousExcersiceResult, this.currentExcersiceResult, this.maxRound, this.reportExcersiceName);
     }
 
     private void readingTablesName() {

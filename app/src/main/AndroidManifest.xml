@@ -19,7 +19,8 @@
         <activity android:name=".TrainDetailsActivity" />
         <activity android:name=".SetReportActivity" />
         <activity android:name=".TrainDetailsWatchActivity" />
-        <activity android:name=".EditRhythmActivity"></activity>
+        <activity android:name=".EditRhythmActivity" />
+        <activity android:name=".WatchingBoardActivity"></activity>
     </application>
 
 </manifest>
