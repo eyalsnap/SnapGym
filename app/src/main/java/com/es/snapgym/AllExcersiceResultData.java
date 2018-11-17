@@ -22,14 +22,7 @@ public class AllExcersiceResultData {
         this.allCurrentSets = new SetDetailData[numberOfSets];
         ExcersiceResultFactory.extractAllExcersiceResult(this.allPreviousSets, this.previousTable);
         ExcersiceResultFactory.extractAllExcersiceResult(this.allCurrentSets, this.currentTable);
-        copyingPreviousTrainToCurrent();
 
-    }
-
-    private void copyingPreviousTrainToCurrent(){
-        for (int setIndex =0; setIndex<allCurrentSets.length; setIndex++)
-            if (allCurrentSets[setIndex] == null)
-                allCurrentSets[setIndex] = allPreviousSets[setIndex];
     }
 
     public String getName(){

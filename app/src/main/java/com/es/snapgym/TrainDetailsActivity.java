@@ -115,21 +115,6 @@ public class TrainDetailsActivity extends AppCompatActivity {
         this.currentDbExcersiceData = new DBExcersiceData(this, currentTableName);
 
         loadExcersices();
-
-        Button saveButton = (Button) findViewById(R.id.saveExcersicesButton);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveCurrentExcersices();
-            }
-        });
-        Button loadButton = (Button) findViewById(R.id.loadExcersicesButton);
-        loadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadExcersices();
-            }
-        });
     }
 
     private void updatingExcersiceList() {
@@ -239,11 +224,7 @@ public class TrainDetailsActivity extends AppCompatActivity {
     }
 
     private void removingElementsChangingVisible(int visibility){
-        Button loadButton = (Button) findViewById(R.id.loadExcersicesButton);
-        Button saveButton = (Button) findViewById(R.id.saveExcersicesButton);
         Button addExcersiceButton = (Button) findViewById(R.id.addingExcersiceButton);
-        loadButton.setVisibility(visibility);
-        saveButton.setVisibility(visibility);
         addExcersiceButton.setVisibility(visibility);
 
         TextView excersiceName = (TextView) findViewById(R.id.newExcersiceEditView);

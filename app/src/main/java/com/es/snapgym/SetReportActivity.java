@@ -15,6 +15,8 @@ public class SetReportActivity extends AppCompatActivity {
     private ReportNumberLineData resultReport;
     private ReportNumberLineData previousReport;
 
+    private EditText weightTextView;
+
     private TextView reportExcersiceNameTextView;
     private TextView reportExcersiceRepeatTextView;
 
@@ -79,6 +81,7 @@ public class SetReportActivity extends AppCompatActivity {
     }
 
     private void initReportNumbers() {
+        this.weightTextView = (EditText) findViewById(R.id.reportExcersiceWeightTextView);
         this.targetReport = new ReportNumberLineChangebleData(findViewById(R.id.targetTextView), findViewById(R.id.targetNumberPicker), false, false);
         this.resultReport = new ReportNumberLineChangebleData(findViewById(R.id.resultTextView), findViewById(R.id.resultNumberPicker), true, false);
         this.previousReport = new ReportNumberLinePreviousData(findViewById(R.id.previousTextView), findViewById(R.id.previousNumberPicker), false, false);
@@ -99,6 +102,7 @@ public class SetReportActivity extends AppCompatActivity {
     }
 
     private void setReportDetail(SetDetailData reportDetail){
+        this.weightTextView.setText(reportDetail.getWeight());
         this.targetReport.setValue(reportDetail.getTarget());
         this.resultReport.setValue(reportDetail.getRepeat());
     }
@@ -111,17 +115,19 @@ public class SetReportActivity extends AppCompatActivity {
     }
 
     private void updateResults(){
-        SetDetailData rd = resultsData.getCurrentSet(this.round);
+        SetDetailData rd = resultsData.getPreviousSetResult(this.round);
+        if (rd != null)
+            this.previousReport.setValue(rd.getRepeat());
+
+        if (resultsData.getCurrentSet(this.round) != null)
+            rd = resultsData.getCurrentSet(this.round);
+
         if (rd != null)
             setReportDetail(rd);
 
-        rd = resultsData.getPreviousSetResult(this.round);
-        if (rd != null)
-            this.previousReport.setValue(rd.getRepeat());
     }
 
     private SetDetailData createReportDetail() {
-        EditText weightTextView = (EditText) findViewById(R.id.reportExcersiceWeightTextView);
         String weight = weightTextView.getText().toString();
         return new SetDetailData(this.round, weight, this.resultReport.getNumber(), this.targetReport.getNumber());
     }

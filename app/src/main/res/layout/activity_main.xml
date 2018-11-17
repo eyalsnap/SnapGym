@@ -71,14 +71,6 @@
         app:layout_constraintVertical_bias="0.075"
         tools:layout_editor_absoluteY="44dp" />
 
-    <Button
-        android:id="@+id/tempButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TEMP"
-        tools:layout_editor_absoluteX="147dp"
-        tools:layout_editor_absoluteY="103dp" />
-
     <EditText
         android:id="@+id/locationEditText"
         android:layout_width="200dp"

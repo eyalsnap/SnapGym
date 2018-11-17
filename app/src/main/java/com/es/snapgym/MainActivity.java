@@ -64,13 +64,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button tempButton = (Button) findViewById(R.id.tempButton);
-        tempButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tempFunction();
-            }
-        });
     }
 
     private void watchingTrains() {
