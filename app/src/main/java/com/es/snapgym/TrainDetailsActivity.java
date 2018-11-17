@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +30,10 @@ public class TrainDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_train_details);
+
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
 
         createAddExcersiceButton();
 
@@ -71,6 +76,7 @@ public class TrainDetailsActivity extends AppCompatActivity {
 
                 Intent editRhythmActivity = new Intent(getApplicationContext(), EditRhythmActivity.class);
                 editRhythmActivity.putExtra("com.es.snapgym.EXCERSICE_OBJECT", excersiceDetails.get(taggedExcersiceIndex));
+                editRhythmActivity.putExtra("com.es.snapgym.EXCERSICE_RHYTHM_OBJECT", excersiceDetails.get(taggedExcersiceIndex).getRhythm());
 
                 editRhythmActivity.putExtra("com.es.snapgym.LOCATION", getIntent().getExtras().getString("com.es.snapgym.LOCATION"));
                 editRhythmActivity.putExtra("com.es.snapgym.TYPE", getIntent().getExtras().getString("com.es.snapgym.TYPE"));

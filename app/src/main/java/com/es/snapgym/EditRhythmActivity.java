@@ -7,6 +7,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
@@ -30,6 +31,8 @@ public class EditRhythmActivity extends AppCompatActivity {
 
     private int scrrenWidth;
 
+    private float numberPickerWidth = 192.0f;
+
     ConstraintLayout constraintLayout;
     LayoutParams layoutParams;
 
@@ -37,7 +40,14 @@ public class EditRhythmActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_rhythm);
+
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         excersiceDetailData = getIntent().getParcelableExtra("com.es.snapgym.EXCERSICE_OBJECT");
+        String curr_rhytm = getIntent().getExtras().getString("com.es.snapgym.EXCERSICE_RHYTHM_OBJECT");
+        if (!"rhythm".equals(curr_rhytm))
+            excersiceDetailData.setRhythm(new RhythmClassReal(curr_rhytm));
 
         TextView excersiceTextView = (TextView) findViewById(R.id.editRhythmExNameTextView);
         excersiceTextView.setText(excersiceDetailData.getName());
@@ -46,13 +56,6 @@ public class EditRhythmActivity extends AppCompatActivity {
 
         initBeforeSetNumberPicker();
         initNumberPickerVariables();
-
-
-
-
-
-
-
 
         Button addRhythm = (Button) findViewById(R.id.addRhythmButton);
         addRhythm.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +87,7 @@ public class EditRhythmActivity extends AppCompatActivity {
                 trainIntent.putExtra("com.es.snapgym.CURRENT_TRAIN_TABLE_NAME", getIntent().getExtras().getString("com.es.snapgym.CURRENT_TRAIN_TABLE_NAME"));
                 trainIntent.putExtra("com.es.snapgym.IS_NEW", false);
 
-                dbExcersiceData.addRoundDeleteIfExist(new ExcersiceDetailData(excersiceDetailData.getName(), excersiceDetailData.getRepeat(), numberPickersLst));
+                dbExcersiceData.addRoundDeleteIfExist(new ExcersiceDetailData(excersiceDetailData.getName(), excersiceDetailData.getRepeat(), numberPickersLst, beforeNumberPicker.getValue()));
 
                 startActivity(trainIntent);
             }
@@ -96,16 +99,7 @@ public class EditRhythmActivity extends AppCompatActivity {
         if (numberOfTimes > 3)
             return;
 
-        NumberPicker newTime = new NumberPicker(getApplicationContext());
-        newTime.setLayoutParams(layoutParams);
-
-        newTime.setMinValue(basicNumberPicker.getMinValue());
-        newTime.setMaxValue(basicNumberPicker.getMaxValue());
-        newTime.setWrapSelectorWheel(false);
-        newTime.setScaleX(basicNumberPicker.getScaleX());
-        newTime.setScaleY(basicNumberPicker.getScaleY());
-
-        newTime.setY(basicNumberPicker.getY());
+        NumberPicker newTime = createOneNumberPicker();
 
         numberPickersLst.add(newTime);
         numberOfTimes++;
@@ -131,22 +125,55 @@ public class EditRhythmActivity extends AppCompatActivity {
 
         basicNumberPicker = (NumberPicker) findViewById(R.id.basicRhytmNumberPicker);
 
-        basicNumberPicker.setMinValue(1);
-        basicNumberPicker.setMaxValue(12);
-        basicNumberPicker.setWrapSelectorWheel(false);
-
-        numberPickersWidth = basicNumberPicker.getWidth();
-        numberPickersLst = new LinkedList<>();
-
-        excersiceDetailData.setRhythm(new RhythmClassReal(numberPickersLst));
-
-        numberPickersLst.add(basicNumberPicker);
+        initNumberPickerLst();
 
     }
 
-    private void updateLocations(){
+    private void initNumberPickerLst() {
 
-        float numberPickerWidth = basicNumberPicker.getWidth();
+        numberPickersWidth = basicNumberPicker.getWidth();
+
+        numberPickersLst = new LinkedList<>();
+
+        basicNumberPicker.setMinValue(1);
+        basicNumberPicker.setMaxValue(12);
+        basicNumberPicker.setValue(0);
+        basicNumberPicker.setWrapSelectorWheel(false);
+        numberPickersLst.add(basicNumberPicker);
+
+        LinkedList<Integer> timesLst = excersiceDetailData.getRhythmTimes();
+        if (timesLst != null){
+            numberOfTimes = timesLst.size();
+
+            basicNumberPicker.setValue(timesLst.get(0));
+
+            for (int timeIndex = 1; timeIndex < numberOfTimes; timeIndex++) {
+                NumberPicker newTime = createOneNumberPicker();
+                newTime.setValue(timesLst.get(timeIndex));
+
+                numberPickersLst.add(newTime);
+                constraintLayout.addView(newTime);
+
+            }
+        }
+
+        updateLocations();
+
+    }
+
+    private NumberPicker createOneNumberPicker() {
+        NumberPicker newTime = new NumberPicker(getApplicationContext());
+        newTime.setLayoutParams(layoutParams);
+        newTime.setMinValue(0);
+        newTime.setMaxValue(12);
+        newTime.setWrapSelectorWheel(false);
+        newTime.setScaleX(0.75f);
+        newTime.setScaleY(1f);
+        newTime.setY(631.0f);
+        return newTime;
+    }
+
+    private void updateLocations(){
 
         float space = ( scrrenWidth - numberOfTimes * numberPickerWidth ) / ( numberOfTimes + 1 );
         for (int numberPickerIndex = 0; numberPickerIndex < numberOfTimes; numberPickerIndex++) {
@@ -168,8 +195,9 @@ public class EditRhythmActivity extends AppCompatActivity {
 
     private void initBeforeSetNumberPicker(){
         beforeNumberPicker = (NumberPicker) findViewById(R.id.timeBeforeNumberPicker);
-        beforeNumberPicker.setMinValue(1);
+        beforeNumberPicker.setMinValue(0);
         beforeNumberPicker.setMaxValue(12);
+        beforeNumberPicker.setValue(this.excersiceDetailData.getPrepareTime());
         beforeNumberPicker.setWrapSelectorWheel(false);
 
     }

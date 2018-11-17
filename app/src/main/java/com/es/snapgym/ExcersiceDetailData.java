@@ -28,15 +28,16 @@ public class ExcersiceDetailData extends DBDetailObject implements Parcelable{
         this.rhythm = new RhythmClassReal(rhythmString);
     }
 
-    public ExcersiceDetailData(String name, int repeat, LinkedList<NumberPicker> rhythmLst) {
+    public ExcersiceDetailData(String name, int repeat, LinkedList<NumberPicker> rhythmLst, int preparingTime) {
         this.name = name;
         this.repeat = repeat;
-        this.rhythm = new RhythmClassReal(rhythmLst);
+        this.rhythm = new RhythmClassReal(rhythmLst, preparingTime);
     }
 
     protected ExcersiceDetailData(Parcel in) {
         name = in.readString();
         repeat = in.readInt();
+        this.rhythm = new RhythmClassEmpty();
     }
 
     public void setRhythm(RhythmAbstractClass newRhytm){
@@ -53,6 +54,14 @@ public class ExcersiceDetailData extends DBDetailObject implements Parcelable{
 
     public int getRepeat() {
         return this.repeat;
+    }
+
+    public int getPrepareTime(){
+        return this.rhythm.getPreparingTime();
+    }
+
+    public LinkedList<Integer> getRhythmTimes(){
+        return this.rhythm.getTimesLst();
     }
 
     @Override

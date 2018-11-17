@@ -10,8 +10,8 @@ import java.util.LinkedList;
 
 public class RhythmClassReal extends RhythmAbstractClass {
 
-    public RhythmClassReal(LinkedList<NumberPicker> times){
-        super(convertNumberPickerToInteger(times));
+    public RhythmClassReal(LinkedList<NumberPicker> times, int preparingTime){
+        super(preparingTime, convertNumberPickerToInteger(times));
     }
 
     public RhythmClassReal(String rhythmString){
