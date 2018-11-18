@@ -15,7 +15,7 @@ public class RhythmClassReal extends RhythmAbstractClass {
     }
 
     public RhythmClassReal(String rhythmString){
-        super(convertStringToInteger(rhythmString));
+        super(rhythmString);
     }
 
     private static LinkedList<Integer> convertNumberPickerToInteger(LinkedList<NumberPicker> times){
@@ -24,14 +24,5 @@ public class RhythmClassReal extends RhythmAbstractClass {
             theTimes.add(times.get(round_index).getValue());
         return theTimes;
     }
-
-    private static LinkedList<Integer> convertStringToInteger(String rhythmString){
-        String [] values = rhythmString.split(":");
-        LinkedList<Integer> time = new LinkedList<>();
-        for (int time_index=0; time_index<values.length; time_index++)
-            time.add(Integer.parseInt(values[time_index]));
-        return time;
-    }
-
 
 }

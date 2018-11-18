@@ -7,7 +7,7 @@ package com.es.snapgym;
 public class RhythmClassEmpty extends RhythmAbstractClass {
 
     public RhythmClassEmpty() {
-        super(null);
+        super();
     }
 
     @Override
