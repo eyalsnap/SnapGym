@@ -24,7 +24,6 @@ public class EditRhythmActivity extends AppCompatActivity {
 
     private DBExcersiceData dbExcersiceData;
 
-    private NumberPicker basicNumberPicker;
     private float numberPickersWidth;
     private LinkedList<NumberPicker> numberPickersLst;
     private int numberOfTimes = 1;
@@ -123,31 +122,24 @@ public class EditRhythmActivity extends AppCompatActivity {
                 LayoutParams.WRAP_CONTENT, // Width of TextView
                 LayoutParams.WRAP_CONTENT); // Height of TextView
 
-        basicNumberPicker = (NumberPicker) findViewById(R.id.basicRhytmNumberPicker);
-
         initNumberPickerLst();
 
     }
 
     private void initNumberPickerLst() {
 
-        numberPickersWidth = basicNumberPicker.getWidth();
-
         numberPickersLst = new LinkedList<>();
 
-        basicNumberPicker.setMinValue(1);
-        basicNumberPicker.setMaxValue(12);
-        basicNumberPicker.setValue(0);
-        basicNumberPicker.setWrapSelectorWheel(false);
-        numberPickersLst.add(basicNumberPicker);
-
         LinkedList<Integer> timesLst = excersiceDetailData.getRhythmTimes();
-        if (timesLst != null){
+        if (timesLst == null){
+            NumberPicker basicNumberPicker = createOneNumberPicker();
+            numberPickersLst.add(basicNumberPicker);
+            constraintLayout.addView(basicNumberPicker);
+        }
+        else{
             numberOfTimes = timesLst.size();
 
-            basicNumberPicker.setValue(timesLst.get(0));
-
-            for (int timeIndex = 1; timeIndex < numberOfTimes; timeIndex++) {
+            for (int timeIndex = 0; timeIndex < numberOfTimes; timeIndex++) {
                 NumberPicker newTime = createOneNumberPicker();
                 newTime.setValue(timesLst.get(timeIndex));
 
