@@ -18,11 +18,6 @@ public abstract class RhythmAbstractClass {
         this.times = theTimes;
     }
 
-    public RhythmAbstractClass(LinkedList<Integer> theTimes){
-        this.times = theTimes;
-        this.preparingTime = 0;
-    }
-
     public RhythmAbstractClass(String rhythmString){
         String [] parts = rhythmString.split(":");
         this.preparingTime = Integer.parseInt(parts[0]);
@@ -30,16 +25,6 @@ public abstract class RhythmAbstractClass {
         this.times = new LinkedList<>();
         for (int time_index=0; time_index<values.length; time_index++)
             this.times.add(Integer.parseInt(values[time_index]));
-    }
-
-    private static LinkedList<Integer> convertStringToInteger(String rhythmString){
-        String [] parts = rhythmString.split(":");
-        int prepareTime = Integer.parseInt(parts[0]);
-        String [] values = parts[1].split("-");
-        LinkedList<Integer> time = new LinkedList<>();
-        for (int time_index=0; time_index<values.length; time_index++)
-            time.add(Integer.parseInt(values[time_index]));
-        return time;
     }
 
     public int getPreparingTime(){
