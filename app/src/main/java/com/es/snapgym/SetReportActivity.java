@@ -32,6 +32,11 @@ public class SetReportActivity extends AppCompatActivity {
     private String previousTableName;
     private String currentTableName;
 
+    private RhythmAbstractClass rhythm;
+
+    SoundRhythm soundRhythm;
+    Button soundButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +51,22 @@ public class SetReportActivity extends AppCompatActivity {
         createButtons();
         listeningToSwipe();
 
+        initSoundButton();
+
+    }
+
+    private void initSoundButton() {
+        soundButton = (Button) findViewById(R.id.soundButton);
+        soundRhythm = new SoundRhythm(rhythm.getTimesLst(), maxRound, getApplicationContext());
+        soundButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!soundRhythm.isPlay())
+                    soundRhythm.start();
+                else
+                    soundRhythm.stopSound();
+            }
+        });
     }
 
     private void createButtons() {
@@ -146,6 +167,13 @@ public class SetReportActivity extends AppCompatActivity {
     private void readingTablesName() {
         this.previousTableName = getIntent().getExtras().getString("com.es.snapgym.PREVIOUS_SETS_TABLE_NAME");
         this.currentTableName = getIntent().getExtras().getString("com.es.snapgym.CURRENT_SETS_TABLE_NAME");
+        String rhythmString = getIntent().getExtras().getString("com.es.snapgym.RHYTHM_STRING");
+        if ("rhythm".equals(rhythmString))
+            this.rhythm = new RhythmClassEmpty();
+        else
+            this.rhythm = new RhythmClassReal(rhythmString);
+        TextView rhythmShowTextView = (TextView) findViewById(R.id.rhythmShowTextView);
+        rhythmShowTextView.setText(rhythmString);
     }
 
     private void listeningToSwipe(){

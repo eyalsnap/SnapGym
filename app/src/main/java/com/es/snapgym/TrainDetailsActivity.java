@@ -156,6 +156,7 @@ public class TrainDetailsActivity extends AppCompatActivity {
 
                 reportExcersiceActivity.putExtra("com.es.snapgym.PREVIOUS_SETS_TABLE_NAME", previousDbExcersiceData.getTableName() + "_" + excersiceName);
                 reportExcersiceActivity.putExtra("com.es.snapgym.CURRENT_SETS_TABLE_NAME", currentDbExcersiceData.getTableName() + "_" + excersiceName);
+                reportExcersiceActivity.putExtra("com.es.snapgym.RHYTHM_STRING", excersiceDetails.get(position).getRhythm());
 
                 startActivity(reportExcersiceActivity);
             }
