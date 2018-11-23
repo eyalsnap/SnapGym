@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-
         if (shouldCleanTable) {
             DBTrainData dbTrainData = new DBTrainData(this, TRAINS_DB_NAME);
             SQLiteDatabase db = dbTrainData.getWritableDatabase();
@@ -139,9 +138,4 @@ public class MainActivity extends AppCompatActivity {
         return new TrainDetailData(this.currentTrainTableName,type,date.getTime(),dateString, location);
     }
 
-    private void tempFunction(){
-        Intent editRhythmActivity = new Intent(getApplicationContext(), EditRhythmActivity.class);
-        editRhythmActivity.putExtra("com.es.snapgym.EXCERSICE_OBJECT", new ExcersiceDetailData("ex_name", 5));
-        startActivity(editRhythmActivity );
-    }
 }

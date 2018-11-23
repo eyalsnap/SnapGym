@@ -1,7 +1,10 @@
 package com.es.snapgym;
 
+import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -32,6 +35,11 @@ public class SetReportActivity extends AppCompatActivity {
     private String previousTableName;
     private String currentTableName;
 
+    private RhythmAbstractClass rhythm;
+
+    SoundRhythm soundRhythm;
+    Button soundButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +53,54 @@ public class SetReportActivity extends AppCompatActivity {
 
         createButtons();
         listeningToSwipe();
+
+        initSoundButton();
+
+    }
+
+    private void initSoundButton() {
+
+        soundButton = (Button) findViewById(R.id.soundButton);
+        soundRhythm = new SoundRhythm(rhythm, targetReport.getNumber(), getApplicationContext(), getScreenWindow(), soundButton);
+
+
+        soundButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateScreenWindow();
+                if (!soundRhythm.isPlay()) {
+                    soundRhythm.run();
+                }
+                else {
+                    soundRhythm.stopPlay();
+                }
+            }
+        });
+    }
+
+    private TextView getScreenWindow(){
+
+        TextView textView = (TextView) findViewById(R.id.screenTextView);
+        textView.setVisibility(View.INVISIBLE);
+        return textView;
+    }
+
+    private void updateScreenWindow(){
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int scrrenWidth = size.x;
+
+        TextView textView = (TextView) findViewById(R.id.screenTextView);
+
+        textView.setX(0);
+        textView.setY(0);
+        textView.setWidth(scrrenWidth);
+        textView.setHeight((int)soundButton.getY());
+        textView.setTextColor(Color.WHITE);
+        textView.setBackgroundColor(Color.GREEN);
+        textView.setText("0");
+        textView.setTextSize(100);
 
     }
 
@@ -146,6 +202,13 @@ public class SetReportActivity extends AppCompatActivity {
     private void readingTablesName() {
         this.previousTableName = getIntent().getExtras().getString("com.es.snapgym.PREVIOUS_SETS_TABLE_NAME");
         this.currentTableName = getIntent().getExtras().getString("com.es.snapgym.CURRENT_SETS_TABLE_NAME");
+        String rhythmString = getIntent().getExtras().getString("com.es.snapgym.RHYTHM_STRING");
+        if ("rhythm".equals(rhythmString))
+            this.rhythm = new RhythmClassEmpty();
+        else
+            this.rhythm = new RhythmClassReal(rhythmString);
+        TextView rhythmShowTextView = (TextView) findViewById(R.id.rhythmShowTextView);
+        rhythmShowTextView.setText(rhythmString);
     }
 
     private void listeningToSwipe(){

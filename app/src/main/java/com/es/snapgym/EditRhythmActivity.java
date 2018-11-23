@@ -156,7 +156,7 @@ public class EditRhythmActivity extends AppCompatActivity {
     private NumberPicker createOneNumberPicker() {
         NumberPicker newTime = new NumberPicker(getApplicationContext());
         newTime.setLayoutParams(layoutParams);
-        newTime.setMinValue(0);
+        newTime.setMinValue(1);
         newTime.setMaxValue(12);
         newTime.setWrapSelectorWheel(false);
         newTime.setScaleX(0.75f);
