@@ -2,6 +2,8 @@ package com.es.snapgym;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.view.View;
+import android.widget.PopupWindow;
 
 import java.util.LinkedList;
 
@@ -10,7 +12,7 @@ import java.util.LinkedList;
  */
 
 
-public class SoundRhythm extends Thread {
+public class SoundRhythm {
 
     private static final int [] timeToAudio = {-1,
                                                 R.raw.counting1,
@@ -31,44 +33,69 @@ public class SoundRhythm extends Thread {
     private final LinkedList<Integer> times;
     private final int repeats;
     private final Context context;
-    private boolean dontStop = false;
+    private final LinkedList<Integer> fileInOrder;
 
-    public SoundRhythm(LinkedList<Integer> times, int repeats, Context context){
+    private boolean isPlaying = false;
+    private MediaPlayer mp;
+
+    private PopupWindow pw;
+
+
+    public SoundRhythm(LinkedList<Integer> times, int repeats, Context context, PopupWindow pw){
         this.times = times;
         this.repeats = repeats;
         this.context = context;
+        this.fileInOrder = createPlayList();
+        this.pw = pw;
     }
 
-    @Override
-    public void run() {
+    public void run(View layout) {
 
-        dontStop = true;
-        for (int set_index = 0; dontStop && set_index < this.repeats; set_index++) {
-            for (int time_index = 0; dontStop && time_index < this.times.size(); time_index++) {
-                ring = MediaPlayer.create(this.context, timeToAudio[this.times.get(time_index)]);
-                ring.start();
-                while (ring.isPlaying()) {
-                    if (!dontStop) {
-                        ring.stop();
-                        return;
-                    }
-                    try {
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                    }
-                }
+
+        this.isPlaying = true;
+
+        int index = 0;
+        startPlaying(index);
+
+//        pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
+    }
+
+    private LinkedList<Integer> createPlayList() {
+        LinkedList<Integer> playList = new LinkedList<>();
+        for (int set_index = 0; set_index < this.repeats; set_index++) {
+            for (int time_index = 0; time_index < this.times.size(); time_index++) {
+                playList.add(timeToAudio[this.times.get(time_index)]);
             }
         }
-        dontStop = false;
+        return playList;
     }
 
+    private void startPlaying(final int index) {
 
-    public void stopSound(){
-        dontStop = false;
+        if (index >= this.fileInOrder.size())
+            return;
+
+        mp = MediaPlayer.create(this.context, this.fileInOrder.get(index));
+
+        // this function is called when the media play audio is finish
+        // this function in not called when the media audio is stopped
+        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                startPlaying(index + 1);
+            }
+        });
+        mp.start();
     }
 
-    public boolean isPlay(){
-        return dontStop;
+    public boolean isPlay() {
+        return this.isPlaying;
+    }
+
+    public void stopPlay(){
+//        pw.dismiss();
+        this.isPlaying = false;
+        mp.stop();
     }
 
 }

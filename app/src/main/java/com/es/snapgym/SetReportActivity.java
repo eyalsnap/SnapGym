@@ -1,5 +1,6 @@
 package com.es.snapgym;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +39,10 @@ public class SetReportActivity extends AppCompatActivity {
     SoundRhythm soundRhythm;
     Button soundButton;
 
+    LayoutInflater inflater;
+    View layout;
+    PopupWindow pw;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,15 +62,26 @@ public class SetReportActivity extends AppCompatActivity {
     }
 
     private void initSoundButton() {
+
+        inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layout = inflater.inflate(R.layout.pop_up_window, null);
+        pw = new PopupWindow(layout, 300, 100, true);
+
         soundButton = (Button) findViewById(R.id.soundButton);
-        soundRhythm = new SoundRhythm(rhythm.getTimesLst(), maxRound, getApplicationContext());
+        soundRhythm = new SoundRhythm(rhythm.getTimesLst(), maxRound, getApplicationContext(), pw);
+
+
         soundButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!soundRhythm.isPlay())
-                    soundRhythm.start();
-                else
-                    soundRhythm.stopSound();
+                if (!soundRhythm.isPlay()) {
+                    soundRhythm.run(layout);
+//                    pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
+                }
+                else {
+                    soundRhythm.stopPlay();
+//                    pw.dismiss();
+                }
             }
         });
     }
