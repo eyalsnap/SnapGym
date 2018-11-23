@@ -61,7 +61,7 @@ public class SetReportActivity extends AppCompatActivity {
     private void initSoundButton() {
 
         soundButton = (Button) findViewById(R.id.soundButton);
-        soundRhythm = new SoundRhythm(rhythm.getTimesLst(), maxRound, getApplicationContext(), getScreenWindow());
+        soundRhythm = new SoundRhythm(rhythm, targetReport.getNumber(), getApplicationContext(), getScreenWindow(), soundButton);
 
 
         soundButton.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +79,13 @@ public class SetReportActivity extends AppCompatActivity {
     }
 
     private TextView getScreenWindow(){
+
+        TextView textView = (TextView) findViewById(R.id.screenTextView);
+        textView.setVisibility(View.INVISIBLE);
+        return textView;
+    }
+
+    private void updateScreenWindow(){
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -93,22 +100,8 @@ public class SetReportActivity extends AppCompatActivity {
         textView.setTextColor(Color.WHITE);
         textView.setBackgroundColor(Color.GREEN);
         textView.setText("0");
-        textView.setTextSize(24);
-        textView.setVisibility(View.INVISIBLE);
+        textView.setTextSize(100);
 
-        return textView;
-    }
-
-    private void updateScreenWindow(){
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int scrrenWidth = size.x;
-
-        TextView textView = (TextView) findViewById(R.id.screenTextView);
-
-        textView.setWidth(scrrenWidth);
-        textView.setHeight((int)soundButton.getY());
     }
 
     private void createButtons() {
