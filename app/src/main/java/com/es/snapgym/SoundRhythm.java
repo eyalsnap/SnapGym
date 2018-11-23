@@ -3,7 +3,7 @@ package com.es.snapgym;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.view.View;
-import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import java.util.LinkedList;
 
@@ -38,26 +38,25 @@ public class SoundRhythm {
     private boolean isPlaying = false;
     private MediaPlayer mp;
 
-    private PopupWindow pw;
+    private final TextView screenTextView;
 
-
-    public SoundRhythm(LinkedList<Integer> times, int repeats, Context context, PopupWindow pw){
+    public SoundRhythm(LinkedList<Integer> times, int repeats, Context context, TextView tv){
         this.times = times;
         this.repeats = repeats;
         this.context = context;
         this.fileInOrder = createPlayList();
-        this.pw = pw;
+        this.screenTextView = tv;
     }
 
-    public void run(View layout) {
-
+    public void run() {
 
         this.isPlaying = true;
+
+        this.screenTextView.setVisibility(View.VISIBLE);
 
         int index = 0;
         startPlaying(index);
 
-//        pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
     }
 
     private LinkedList<Integer> createPlayList() {
@@ -72,8 +71,11 @@ public class SoundRhythm {
 
     private void startPlaying(final int index) {
 
-        if (index >= this.fileInOrder.size())
+        if (index >= this.fileInOrder.size() || !this.isPlaying) {
+            this.screenTextView.setVisibility(View.INVISIBLE);
+            this.isPlaying = false;
             return;
+        }
 
         mp = MediaPlayer.create(this.context, this.fileInOrder.get(index));
 
@@ -89,11 +91,11 @@ public class SoundRhythm {
     }
 
     public boolean isPlay() {
+        this.screenTextView.setVisibility(View.INVISIBLE);
         return this.isPlaying;
     }
 
     public void stopPlay(){
-//        pw.dismiss();
         this.isPlaying = false;
         mp.stop();
     }

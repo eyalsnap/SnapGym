@@ -1,14 +1,15 @@
 package com.es.snapgym;
 
-import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,10 +40,6 @@ public class SetReportActivity extends AppCompatActivity {
     SoundRhythm soundRhythm;
     Button soundButton;
 
-    LayoutInflater inflater;
-    View layout;
-    PopupWindow pw;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,27 +60,55 @@ public class SetReportActivity extends AppCompatActivity {
 
     private void initSoundButton() {
 
-        inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        layout = inflater.inflate(R.layout.pop_up_window, null);
-        pw = new PopupWindow(layout, 300, 100, true);
-
         soundButton = (Button) findViewById(R.id.soundButton);
-        soundRhythm = new SoundRhythm(rhythm.getTimesLst(), maxRound, getApplicationContext(), pw);
+        soundRhythm = new SoundRhythm(rhythm.getTimesLst(), maxRound, getApplicationContext(), getScreenWindow());
 
 
         soundButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                updateScreenWindow();
                 if (!soundRhythm.isPlay()) {
-                    soundRhythm.run(layout);
-//                    pw.showAtLocation(layout, Gravity.CENTER, 0, 0);
+                    soundRhythm.run();
                 }
                 else {
                     soundRhythm.stopPlay();
-//                    pw.dismiss();
                 }
             }
         });
+    }
+
+    private TextView getScreenWindow(){
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int scrrenWidth = size.x;
+
+        TextView textView = (TextView) findViewById(R.id.screenTextView);
+
+        textView.setX(0);
+        textView.setY(0);
+        textView.setWidth(scrrenWidth);
+        textView.setHeight((int)soundButton.getY());
+        textView.setTextColor(Color.WHITE);
+        textView.setBackgroundColor(Color.GREEN);
+        textView.setText("0");
+        textView.setTextSize(24);
+        textView.setVisibility(View.INVISIBLE);
+
+        return textView;
+    }
+
+    private void updateScreenWindow(){
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int scrrenWidth = size.x;
+
+        TextView textView = (TextView) findViewById(R.id.screenTextView);
+
+        textView.setWidth(scrrenWidth);
+        textView.setHeight((int)soundButton.getY());
     }
 
     private void createButtons() {
