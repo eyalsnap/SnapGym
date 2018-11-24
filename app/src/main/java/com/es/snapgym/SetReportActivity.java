@@ -61,12 +61,10 @@ public class SetReportActivity extends AppCompatActivity {
     private void initSoundButton() {
 
         soundButton = (Button) findViewById(R.id.soundButton);
-        soundRhythm = new SoundRhythm(rhythm, targetReport.getNumber(), getApplicationContext(), getScreenWindow(), soundButton);
-
-
         soundButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+            soundRhythm = new SoundRhythm(rhythm, targetReport.getNumber(), getApplicationContext(), getScreenWindow(), soundButton);
                 updateScreenWindow();
                 if (!soundRhythm.isPlay()) {
                     soundRhythm.run();

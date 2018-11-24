@@ -29,8 +29,6 @@ public class SoundRhythm {
                                                 R.raw.counting11,
                                                 R.raw.counting12};
 
-    private MediaPlayer ring;
-
     private final RhythmAbstractClass rhythm;
     private final int repeats;
     private final Context context;
@@ -91,7 +89,7 @@ public class SoundRhythm {
         if (index == 0)
             this.screenTextView.setText("GET READY");
         else
-            this.screenTextView.setText("" + (int)Math.floor((index - 1)/ this.repeats));
+            this.screenTextView.setText("" + (int)Math.floor((index - 1) / this.rhythm.getTimesLst().size()));
 
 
         // this function is called when the media play audio is finish
