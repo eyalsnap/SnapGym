@@ -5,13 +5,11 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class SetReportActivity extends AppCompatActivity {
 
@@ -52,7 +50,6 @@ public class SetReportActivity extends AppCompatActivity {
         initObjectsAndValues();
 
         createButtons();
-        listeningToSwipe();
 
         initSoundButton();
 
@@ -207,26 +204,6 @@ public class SetReportActivity extends AppCompatActivity {
             this.rhythm = new RhythmClassReal(rhythmString);
         TextView rhythmShowTextView = (TextView) findViewById(R.id.rhythmShowTextView);
         rhythmShowTextView.setText(rhythmString);
-    }
-
-    private void listeningToSwipe(){
-        LayoutInflater factory = getLayoutInflater();
-        View view = factory.inflate(R.layout.activity_excersice_report, null);
-        view.setOnTouchListener(new OnSwipeTouchListener(this) {
-            public void onSwipeRight() {
-                updateDB();
-                round+=1;
-                updatePage();
-                Toast.makeText(getApplicationContext(), "swipe right", Toast.LENGTH_SHORT).show();
-            }
-            public void onSwipeLeft() {
-                updateDB();
-                round-=1;
-                updatePage();
-                Toast.makeText(getApplicationContext(), "swipe left", Toast.LENGTH_SHORT).show();
-            }
-
-        });
     }
 
 }
