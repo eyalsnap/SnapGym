@@ -3,8 +3,10 @@ package com.es.snapgym;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -53,6 +55,28 @@ public class SetReportActivity extends AppCompatActivity {
 
         initSoundButton();
 
+        tmpSwipe();
+
+    }
+
+    private GestureDetectorCompat gestureDetectorCompat = null;
+    private void tmpSwipe() {
+        // Create a common gesture listener object.
+        DetectSwipeGestureListener gestureListener = new DetectSwipeGestureListener();
+
+        // Set activity in the listener.
+        gestureListener.setActivity(this);
+
+        // Create the gesture detector with the gesture listener.
+        gestureDetectorCompat = new GestureDetectorCompat(this, gestureListener);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        // Pass activity on touch event to the gesture detector.
+        gestureDetectorCompat.onTouchEvent(event);
+        // Return true to tell android OS that event has been consumed, do not pass it to other event listeners.
+        return true;
     }
 
     private void initSoundButton() {
@@ -204,6 +228,18 @@ public class SetReportActivity extends AppCompatActivity {
             this.rhythm = new RhythmClassReal(rhythmString);
         TextView rhythmShowTextView = (TextView) findViewById(R.id.rhythmShowTextView);
         rhythmShowTextView.setText(rhythmString);
+    }
+
+    public void next(){
+        updateDB();
+        round+=1;
+        updatePage();
+    }
+
+    public void back(){
+        updateDB();
+        round-=1;
+        updatePage();
     }
 
 }
