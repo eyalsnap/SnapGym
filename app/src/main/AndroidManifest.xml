@@ -4,9 +4,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/snapgymicon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/snapgymicon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
@@ -21,7 +21,6 @@
         <activity android:name=".TrainDetailsWatchActivity" />
         <activity android:name=".EditRhythmActivity" />
         <activity android:name=".WatchingBoardActivity" />
-        <activity android:name=".popUpActivity"></activity>
     </application>
 
 </manifest>
