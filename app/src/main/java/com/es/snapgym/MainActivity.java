@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     private String currentTrainTableName;
     String dateString;
     Date date;
-    private final boolean shouldCleanTable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        if (shouldCleanTable) {
-            DBTrainData dbTrainData = new DBTrainData(this, TRAINS_DB_NAME);
-            SQLiteDatabase db = dbTrainData.getWritableDatabase();
-            db.execSQL("DROP TABLE IF EXISTS table_of_" + TRAINS_DB_NAME);
-            db.execSQL("CREATE TABLE  table_of_" + TRAINS_DB_NAME + "(ID INTEGER PRIMARY KEY, TABLE_NAME STRING, TYPE STRING, DATE LONG, DATE_TO_SHOW STRING, LOCATION STRING)");
-        }
 
         setDate();
 
@@ -70,6 +62,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void cleanDatabase() {
+        DBTrainData dbTrainData = new DBTrainData(this, TRAINS_DB_NAME);
+        SQLiteDatabase db = dbTrainData.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS table_of_" + TRAINS_DB_NAME);
+        db.execSQL("CREATE TABLE  table_of_" + TRAINS_DB_NAME + "(ID INTEGER PRIMARY KEY, TABLE_NAME STRING, TYPE STRING, DATE LONG, DATE_TO_SHOW STRING, LOCATION STRING)");
+        Toast.makeText(getApplicationContext(), "DB DELETED!!", Toast.LENGTH_SHORT).show();
+    }
+
     private void watchingTrains() {
         Intent watchActivity = new Intent(getApplicationContext(), TrainDetailsWatchActivity.class);
         watchActivity.putExtra("com.es.snapgym.TRAIN_TABLE_NAME", "table_of_" + TRAINS_DB_NAME);
@@ -87,6 +87,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void moveToTrain(String location, String type) {
+
+        if ("123123".equals(type)) {
+            cleanDatabase();
+            return;
+        }
+
         Intent trainListActivity = new Intent(getApplicationContext(), TrainDetailsActivity.class);
 
         String previousTrain = getPreviousTrainAndAddingCurrent(location, type);
