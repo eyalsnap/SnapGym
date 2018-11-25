@@ -12,17 +12,6 @@ public class ReportNumberLineChangebleData extends ReportNumberLineData {
 
         super(theTextView, theNumberPicker, initState);
 
-        if (isWatching)
-            this.numberPicker.setEnabled(false);
-        else {
-            this.textView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    numberPicker.setEnabled(!numberPicker.isEnabled());
-                    return true;
-                }
-            });
-        }
     }
 
 }

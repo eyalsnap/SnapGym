@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -39,6 +40,9 @@ public class SetReportActivity extends AppCompatActivity {
 
     SoundRhythm soundRhythm;
     Button soundButton;
+
+    private CheckBox checkBox;
+    private boolean[] done;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +131,7 @@ public class SetReportActivity extends AppCompatActivity {
         createSpecificButton(-1, R.id.backRoundButton);
         createSpecificButton(1, R.id.nextRoundButton);
         createSpecificButton(0, R.id.saveRoundButton);
+
     }
 
     private void createSpecificButton(final int roundChange, int buttonId) {
@@ -145,6 +150,11 @@ public class SetReportActivity extends AppCompatActivity {
 
         readingTablesName();
         initPage();
+
+        this.done = new boolean[this.maxRound];
+        for (int i = 0; i < this.done.length; i++)
+            this.done[i] = false;
+
         updatePage();
 
     }
@@ -162,10 +172,17 @@ public class SetReportActivity extends AppCompatActivity {
 
     private void initReportNumbers() {
         this.weightTextView = (EditText) findViewById(R.id.reportExcersiceWeightTextView);
-        this.targetReport = new ReportNumberLineChangebleData(findViewById(R.id.targetTextView), findViewById(R.id.targetNumberPicker), false, false);
+        this.targetReport = new ReportNumberLineChangebleData(findViewById(R.id.targetTextView), findViewById(R.id.targetNumberPicker), true, false);
         this.resultReport = new ReportNumberLineChangebleData(findViewById(R.id.resultTextView), findViewById(R.id.resultNumberPicker), true, false);
         this.previousReport = new ReportNumberLinePreviousData(findViewById(R.id.previousTextView), findViewById(R.id.previousNumberPicker), false, false);
         this.reportExcersiceNameTextView.setText(this.reportExcersiceName);
+        this.checkBox = (CheckBox) findViewById(R.id.checkBox);
+        this.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                done[round-1] = checkBox.isChecked();
+            }
+        });
     }
 
     private void initRoundTextViews() {
@@ -204,6 +221,8 @@ public class SetReportActivity extends AppCompatActivity {
 
         if (rd != null)
             setReportDetail(rd);
+
+        this.checkBox.setChecked(this.done[this.round-1]);
 
     }
 
